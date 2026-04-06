@@ -17,7 +17,7 @@ namespace ShivsLabAPI
         public override void Enable()
         {
             Instance = this;
-            
+            GitUpdater.CheckForUpdates();
             if (!EventRegister.RegisterEvents())
             {
                 Logger.Error("Failed to register events");
