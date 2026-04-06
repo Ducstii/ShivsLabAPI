@@ -17,17 +17,17 @@ namespace ShivsLabAPI
 
         public override void Enable()
         {
-            if (!ShivPlugin.Instance.Config.Enabled)
+            Instance = this;
+            if (!Config.Enabled)
             {
                 Logger.Info("ShivsLabAPI disabled");
+                return;
             }
-            Instance = this;
             if (!EventRegister.RegisterEvents())
             {
                 Logger.Error("Failed to register events");
             }
             Logger.Info("ShivsLabAPI started");
-
         }
 
         public override void Disable()
