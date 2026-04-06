@@ -57,11 +57,11 @@ namespace ShivsLabAPI.Events
                 Attack.DealDamage(target);
                 ShivManager.RemoveShiv(ev.UsableItem.Serial, true);
                 ev.Player.SendHint("You stabbed " + target.DisplayName + "!", 3f);
-                target.SendHint("You were stabbed by " + ev.Player.DisplayName + "!", 3f);
+                target.SendHint("<color=red>You were stabbed by</color> " + ev.Player.DisplayName + "<color=red>!</color>", 3f);
             }
             else
             {
-                ev.Player.SendHint("Missed!", 2f);
+                ev.Player.SendHint("<color=red>Missed!</color>", 2f);
             }
         }
 
