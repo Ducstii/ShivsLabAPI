@@ -44,8 +44,15 @@ namespace ShivsLabAPI.Events
                 }
             }
 
+            if (ShivManager.IsOnAttackCooldown(ev.Player))
+            {
+                ev.Player.SendHint("<color=red>Attack on cooldown!</color>", 2f);
+                return;
+            }
+
             if (target != null)
             {
+                ShivManager.SetAttackCooldown(ev.Player);
                 Attack.DealDamage(target);
                 ShivManager.RemoveShiv(ev.UsableItem.Serial, true);
                 ev.Player.SendHint("You stabbed " + target.DisplayName + "!", 3f);

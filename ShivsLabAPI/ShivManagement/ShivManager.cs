@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections;
 using MEC;
 using LabApi.Features.Wrappers;
 
@@ -8,31 +7,35 @@ namespace ShivsLabAPI.ShivManagement
     public class ShivManager
     {
         private static readonly HashSet<ushort> _shivs = new();
-        private static readonly HashSet<string> _craftCooldowns = new();
-        private static readonly HashSet<string> _attackCooldowns = new();
+        private static readonly Dictionary<string, CoroutineHandle> _craftCooldowns = new();
+        private static readonly Dictionary<string, CoroutineHandle> _attackCooldowns = new();
 
-        public static bool IsOnCraftCooldown(Player player) => _craftCooldowns.Contains(player.UserId);
+        public static bool IsOnCraftCooldown(Player player) =>
+            _craftCooldowns.TryGetValue(player.UserId, out var handle) && Timing.IsRunning(handle);
 
         public static void SetCraftCooldown(Player player)
         {
             string userId = player.UserId;
-            _craftCooldowns.Add(userId);
-            Timing.RunCoroutine(ExpireCooldown(_craftCooldowns, userId, ShivPlugin.Instance.Config.CraftCooldown));
+            if (_craftCooldowns.TryGetValue(userId, out var existing) && Timing.IsRunning(existing))
+                return;
+            _craftCooldowns[userId] = Timing.RunCoroutine(ExpireCooldown(_craftCooldowns, userId, ShivPlugin.Instance.Config.CraftCooldown));
         }
 
-        public static bool IsOnAttackCooldown(Player player) => _attackCooldowns.Contains(player.UserId);
+        public static bool IsOnAttackCooldown(Player player) =>
+            _attackCooldowns.TryGetValue(player.UserId, out var handle) && Timing.IsRunning(handle);
 
         public static void SetAttackCooldown(Player player)
         {
             string userId = player.UserId;
-            _attackCooldowns.Add(userId);
-            Timing.RunCoroutine(ExpireCooldown(_attackCooldowns, userId, ShivPlugin.Instance.Config.AttackCooldown));
+            if (_attackCooldowns.TryGetValue(userId, out var existing) && Timing.IsRunning(existing))
+                return;
+            _attackCooldowns[userId] = Timing.RunCoroutine(ExpireCooldown(_attackCooldowns, userId, ShivPlugin.Instance.Config.AttackCooldown));
         }
 
-        private static IEnumerator<float> ExpireCooldown(HashSet<string> set, string userId, float delay)
+        private static IEnumerator<float> ExpireCooldown(Dictionary<string, CoroutineHandle> dict, string userId, float delay)
         {
             yield return Timing.WaitForSeconds(delay);
-            set.Remove(userId);
+            dict.Remove(userId);
         }
 
         public static Item SpawnShiv(Player player)
@@ -47,6 +50,8 @@ namespace ShivsLabAPI.ShivManagement
         public static void RemoveShivsFromDictionary()
         {
             _shivs.Clear();
+            foreach (var handle in _craftCooldowns.Values) Timing.KillCoroutines(handle);
+            foreach (var handle in _attackCooldowns.Values) Timing.KillCoroutines(handle);
             _craftCooldowns.Clear();
             _attackCooldowns.Clear();
         }
