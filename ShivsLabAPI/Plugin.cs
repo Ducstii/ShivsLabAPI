@@ -4,8 +4,9 @@ using LabApi.Loader.Features.Plugins;
 using ShivsLabAPI.Events;
 namespace ShivsLabAPI
 {
-    public class Plugin : Plugin<Config>
+    public class ShivPlugin : Plugin<Config>
     {
+        public static ShivPlugin Instance { get; private set; }
         public override string Author => "Ducstii";
         public override string Name => "ShivsLabAPI";
         public override string Description => "Add fockin shivs to sl mate ueah you know it";
@@ -14,6 +15,7 @@ namespace ShivsLabAPI
 
         public override void Enable()
         {
+            
             if (!EventRegister.RegisterEvents())
             {
                 Logger.Error("Failed to register events");
@@ -33,10 +35,5 @@ namespace ShivsLabAPI
         }
         
     }
-
-    public class Config
-    {
-        public bool Enabled { get; set; } = true;
-        public bool Debug { get; set; } = false;
-    }
+    
 }
