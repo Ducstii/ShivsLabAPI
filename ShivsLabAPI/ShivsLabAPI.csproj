@@ -73,7 +73,6 @@
         <Compile Include="Config.cs" />
         <Compile Include="Events\EventHandler.cs" />
         <Compile Include="Events\EventRegister.cs" />
-        <Compile Include="GitUpdater.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="ShivManagement\Attack.cs" />
