@@ -72,11 +72,11 @@ namespace ShivsLabAPI.Events
 
         public static void OnChangedItem(PlayerChangedItemEventArgs ev)
         {
-            if (ShivManager.IsShiv(ev.NewItem.Serial))
+            if (ev.NewItem != null && !ev.NewItem.IsDestroyed && ShivManager.IsShiv(ev.NewItem.Serial))
             {
                 ev.Player.SendHint("<color=yellow>Shiv</color>", 9999f);
             }
-            else if (ev.OldItem != null && ShivManager.IsShiv(ev.OldItem.Serial))
+            else if (ev.OldItem != null && !ev.OldItem.IsDestroyed && ShivManager.IsShiv(ev.OldItem.Serial))
             {
                 ev.Player.SendHint("", 0.1f);
             }

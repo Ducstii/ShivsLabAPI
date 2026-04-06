@@ -8,5 +8,7 @@ namespace ShivsLabAPI
         public int DamageAmount  { get; set; } = 1;
         public int ShivDamageAmount { get; set; } = 40;
         public float Range { get; set; } = 1;
+        public float CraftCooldown { get; set; } = 30f;
+        public float AttackCooldown { get; set; } = 5f;
     }
 }

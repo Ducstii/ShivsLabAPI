@@ -31,17 +31,22 @@ namespace ShivsLabAPI.Commands
 
                 Player player = Player.Get(playerSender.ReferenceHub);
 
+                if (!Wallcaster.IsNearWall(player))
+                {
+                    response = "You need to be near a wall to craft a shiv.";
+                    return false;
+                }
+
                 if (UnityEngine.Random.Range(1, ShivPlugin.Instance.Config.SuccessChance + 1) == 1)
                 {
-                    if (!player.IsInventoryFull)
-                    {
-                        ShivManager.SpawnShiv(player);
-                        response = "Success! You crafted a shiv!"; 
-                    }
-                    else
+                    if (player.IsInventoryFull)
                     {
                         response = "Your inventory is full.";
+                        return false;
                     }
+
+                    ShivManager.SpawnShiv(player);
+                    response = "Success! You crafted a shiv!";
                 }
                 else
                 {
