@@ -3,7 +3,7 @@ using CommandSystem;
 using LabApi.Features.Wrappers;
 using PlayerStatsSystem;
 using RemoteAdmin;
-
+using ShivsLabAPI.ShivManagement;
 namespace ShivsLabAPI.Commands
 {
     public class ShivClientCommand
@@ -17,6 +17,12 @@ namespace ShivsLabAPI.Commands
 
             public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
             {
+                if (!ShivPlugin.ShivsEnabled)
+                {
+                    response = "Shivs are disabled.";
+                    return false;
+                }
+
                 if (!(sender is PlayerCommandSender playerSender))
                 {
                     response = "Only players can use this.";
@@ -24,18 +30,26 @@ namespace ShivsLabAPI.Commands
                 }
 
                 Player player = Player.Get(playerSender.ReferenceHub);
+
                 if (UnityEngine.Random.Range(1, ShivPlugin.Instance.Config.SuccessChance + 1) == 1)
                 {
-                    response = "Success! You crafted a shiv!";
-                    // TODO: implement a method in shivmanager to give a shiv item that we track.
+                    if (!player.IsInventoryFull)
+                    {
+                        ShivManager.SpawnShiv(player);
+                        response = "Success! You crafted a shiv!"; 
+                    }
+                    else
+                    {
+                        response = "Your inventory is full.";
+                    }
                 }
                 else
                 {
+                    player.ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler("Bloodbath", ShivPlugin.Instance.Config.DamageAmount));
                     response = "You made yourself bleed from scratching the wall.";
-                    if (player != null)
-                        player.ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler("Bloodbath", 1f));
                 }
-                return  true;
+
+                return true;
             }
         }
     }

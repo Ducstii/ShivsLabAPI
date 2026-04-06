@@ -7,6 +7,7 @@ namespace ShivsLabAPI
     public class ShivPlugin : Plugin<Config>
     {
         public static ShivPlugin Instance { get; private set; }
+        public static bool ShivsEnabled { get; set; } = true;
         public override string Author => "Ducstii";
         public override string Name => "ShivsLabAPI";
         public override string Description => "Add fockin shivs to sl mate ueah you know it";
@@ -15,6 +16,7 @@ namespace ShivsLabAPI
 
         public override void Enable()
         {
+            Instance = this;
             
             if (!EventRegister.RegisterEvents())
             {

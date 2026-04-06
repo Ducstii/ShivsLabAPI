@@ -8,7 +8,9 @@ namespace ShivsLabAPI.Events
             try
             {
                 PlayerEvents.PickingUpItem -= EventHandler.OnPickedEvent;
-                
+                PlayerEvents.UsingItem -= EventHandler.OnInteractedEvent;
+                ServerEvents.RoundEnded -= EventHandler.OnRoundEnded;
+                PlayerEvents.ChangedItem -= EventHandler.OnChangedItem;
                 return true;
             }
             catch
@@ -23,6 +25,9 @@ namespace ShivsLabAPI.Events
             try
             {
                 PlayerEvents.PickingUpItem += EventHandler.OnPickedEvent;
+                PlayerEvents.UsingItem += EventHandler.OnInteractedEvent;
+                ServerEvents.RoundEnded += EventHandler.OnRoundEnded;
+                PlayerEvents.ChangedItem += EventHandler.OnChangedItem;
                 return true;
             }
             catch

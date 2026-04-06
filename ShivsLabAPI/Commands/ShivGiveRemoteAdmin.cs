@@ -1,28 +1,41 @@
 using System;
 using CommandSystem;
+using LabApi.Features.Wrappers;
+using ShivsLabAPI.ShivManagement;
 
 namespace ShivsLabAPI.Commands
 {
-    public class ShivGiveRemoteAdmin
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    public class CraftShivCommand : ICommand
     {
-        [CommandHandler(typeof(RemoteAdminCommandHandler))]
-        public abstract class CraftShivCommand : ICommand
+        public string Command => "giveshiv";
+        public string[] Aliases => new[] { "gvshiv" };
+        public string Description => "Give a shiv to a player. Usage: shiv <player id>";
+
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            public string Command => "shiv";
-            public string[] Aliases => new[] { "sh" };
-            public string Description => "Craft Shiv";
-
-            public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+            if (arguments.Count < 1)
             {
-                if (sender == null)
-                {
-                    response = "You are not a player";
-                }
-
-                return true;
-
+                response = "Usage: shiv <player id>";
+                return false;
             }
 
+            if (!int.TryParse(arguments.At(0), out int playerId))
+            {
+                response = "Invalid player ID.";
+                return false;
+            }
+
+            Player player = Player.Get(playerId);
+            if (player == null)
+            {
+                response = $"Player {playerId} not found.";
+                return false;
+            }
+
+            ShivManager.SpawnShiv(player);
+            response = $"Shiv given to {player.DisplayName}.";
+            return true;
         }
     }
-}       
+}
