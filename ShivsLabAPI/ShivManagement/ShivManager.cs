@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using MEC;
 using LabApi.Features.Wrappers;
 
@@ -14,16 +15,24 @@ namespace ShivsLabAPI.ShivManagement
 
         public static void SetCraftCooldown(Player player)
         {
-            _craftCooldowns.Add(player.UserId);
-            Timing.CallDelayed(ShivPlugin.Instance.Config.CraftCooldown, () => _craftCooldowns.Remove(player.UserId));
+            string userId = player.UserId;
+            _craftCooldowns.Add(userId);
+            Timing.RunCoroutine(ExpireCooldown(_craftCooldowns, userId, ShivPlugin.Instance.Config.CraftCooldown));
         }
 
         public static bool IsOnAttackCooldown(Player player) => _attackCooldowns.Contains(player.UserId);
 
         public static void SetAttackCooldown(Player player)
         {
-            _attackCooldowns.Add(player.UserId);
-            Timing.CallDelayed(ShivPlugin.Instance.Config.AttackCooldown, () => _attackCooldowns.Remove(player.UserId));
+            string userId = player.UserId;
+            _attackCooldowns.Add(userId);
+            Timing.RunCoroutine(ExpireCooldown(_attackCooldowns, userId, ShivPlugin.Instance.Config.AttackCooldown));
+        }
+
+        private static IEnumerator<float> ExpireCooldown(HashSet<string> set, string userId, float delay)
+        {
+            yield return Timing.WaitForSeconds(delay);
+            set.Remove(userId);
         }
 
         public static Item SpawnShiv(Player player)
