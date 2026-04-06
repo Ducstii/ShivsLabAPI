@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Mono and NuGet
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mono-complete nuget
+
+      - name: Restore NuGet packages
+        run: nuget restore ShivsLabAPI.sln
+
+      - name: Build
+        run: msbuild ShivsLabAPI/ShivsLabAPI.csproj /p:Configuration=Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShivsLabAPI
+          path: ShivsLabAPI/bin/Release/ShivsLabAPI.dll
