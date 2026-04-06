@@ -35,32 +35,32 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\..\Projects\projectssources\Assembly-CSharp-Publicized.dll</HintPath>
+          <HintPath>..\references\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-          <HintPath>..\..\..\Projects\projectssources\Assembly-CSharp-firstpass.dll</HintPath>
+          <HintPath>..\references\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="AudioPlayerApi">
-          <HintPath>..\..\..\Projects\projectssources\AudioPlayerApi.dll</HintPath>
+          <HintPath>..\references\AudioPlayerApi.dll</HintPath>
         </Reference>
         <Reference Include="CommandSystem.Core">
-          <HintPath>..\..\..\Projects\projectssources\CommandSystem.Core.dll</HintPath>
+          <HintPath>..\references\CommandSystem.Core.dll</HintPath>
         </Reference>
         <Reference Include="LabApi, Version=1.1.6.1, Culture=neutral, processorArchitecture=Amd64">
           <HintPath>..\packages\Northwood.LabAPI.1.1.6.1\lib\net48\LabApi.dll</HintPath>
         </Reference>
         <Reference Include="Mirror">
-          <HintPath>..\..\..\Projects\projectssources\Mirror.dll</HintPath>
+          <HintPath>..\references\Mirror.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="UnityEngine.CoreModule">
-          <HintPath>..\..\..\Projects\projectssources\UnityEngine.CoreModule.dll</HintPath>
+          <HintPath>..\references\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.PhysicsModule">
-          <HintPath>..\..\..\Projects\projectssources\UnityEngine.PhysicsModule.dll</HintPath>
+          <HintPath>..\references\UnityEngine.PhysicsModule.dll</HintPath>
         </Reference>
         <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
           <HintPath>..\packages\YamlDotNet.11.0.1\lib\net45\YamlDotNet.dll</HintPath>
