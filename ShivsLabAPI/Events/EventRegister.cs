@@ -1,7 +1,7 @@
 using LabApi.Events.Handlers;
 namespace ShivsLabAPI.Events
 {
-    public abstract class EventRegister
+    public static class EventRegister
     {
         public static bool UnregisterEvents()
         {

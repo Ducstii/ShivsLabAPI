@@ -30,12 +30,25 @@ namespace ShivsLabAPI.Commands
                 }
 
                 Player player = Player.Get(playerSender.ReferenceHub);
+                if (player == null)
+                {
+                    response = "Player not found.";
+                    return false;
+                }
 
                 if (!Wallcaster.IsNearWall(player))
                 {
                     response = "You need to be near a wall to craft a shiv.";
                     return false;
                 }
+
+                if (ShivManager.IsOnCraftCooldown(player))
+                {
+                    response = "You are on cooldown.";
+                    return false;
+                }
+
+                ShivManager.SetCraftCooldown(player);
 
                 if (UnityEngine.Random.Range(1, ShivPlugin.Instance.Config.SuccessChance + 1) == 1)
                 {

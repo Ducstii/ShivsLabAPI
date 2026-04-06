@@ -10,19 +10,11 @@ namespace ShivsLabAPI.Events
     {
         public static void OnPickedEvent(PlayerPickingUpItemEventArgs ev)
         {
-            if (!ShivPlugin.ShivsEnabled)
+            if (!ShivPlugin.ShivsEnabled && ShivManager.IsShiv(ev.Pickup.Serial))
             {
-                if (ShivManager.IsShiv(ev.Pickup.Serial))
-                {
-                    ev.IsAllowed = false;
-                    ev.Player.SendHint("The Shiv system is disabled. You cannot have one. Fuck you");
-                }
+                ev.IsAllowed = false;
+                ev.Player.SendHint("The Shiv system is disabled. You cannot have one. Fuck you");
             }
-            else
-            {
-                ev.IsAllowed = true;
-            }
-
         }
 
         public static void OnInteractedEvent(PlayerUsingItemEventArgs ev)

@@ -6,6 +6,7 @@ namespace ShivsLabAPI
 {
     public class ShivPlugin : Plugin<Config>
     {
+      
         public static ShivPlugin Instance { get; private set; }
         public static bool ShivsEnabled { get; set; } = true;
         public override string Author => "Ducstii";
@@ -16,6 +17,10 @@ namespace ShivsLabAPI
 
         public override void Enable()
         {
+            if (!ShivPlugin.Instance.Config.Enabled)
+            {
+                Logger.Info("ShivsLabAPI disabled");
+            }
             Instance = this;
             if (!EventRegister.RegisterEvents())
             {
@@ -34,7 +39,14 @@ namespace ShivsLabAPI
             Logger.Info("ShivsLabAPI stopped");
             
         }
-        
+
+        public static void Log(string msg)
+        {
+            if (Instance.Config.Debug)
+            {
+                Logger.Debug(msg);
+            }
+        }
     }
     
 }

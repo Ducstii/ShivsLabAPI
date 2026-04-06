@@ -6,7 +6,7 @@ namespace ShivsLabAPI.ShivManagement
 {
     public class ShivManager
     {
-        private static readonly Dictionary<ushort, ShivData> _shivs = new();
+        private static readonly HashSet<ushort> _shivs = new();
         private static readonly HashSet<string> _craftCooldowns = new();
         private static readonly HashSet<string> _attackCooldowns = new();
 
@@ -29,12 +29,11 @@ namespace ShivsLabAPI.ShivManagement
         public static Item SpawnShiv(Player player)
         {
             Item item = player.AddItem(ItemType.Adrenaline);
-            _shivs[item.Serial] = new ShivData { Owner = player.UserId };
+            _shivs.Add(item.Serial);
             return item;
         }
 
-        public static bool IsShiv(ushort serial) => _shivs.ContainsKey(serial);
-        public static bool TryGetShiv(ushort serial, out ShivData data) => _shivs.TryGetValue(serial, out data);
+        public static bool IsShiv(ushort serial) => _shivs.Contains(serial);
 
         public static void RemoveShivsFromDictionary()
         {
@@ -52,10 +51,5 @@ namespace ShivsLabAPI.ShivManagement
             }
             _shivs.Remove(serial);
         }
-    }
-
-    public class ShivData
-    {
-        public string Owner { get; set; }
     }
 }
